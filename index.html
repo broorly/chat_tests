@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Application</title>
+    <style>
+        /* Add your CSS styles for the chat interface here */
+    </style>
+</head>
+<body>
+    <div id="chat-box">
+        <!-- Chat messages will be displayed here -->
+    </div>
+    <input type="text" id="message-input" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        const socket = io.connect("http://localhost:3000/chat"); // Connect to your chat server
+
+        // Event handler for receiving chat messages
+        socket.on("chatMessage", (message) => {
+            const chatBox = document.getElementById("chat-box");
+            const messageElement = document.createElement("p");
+            messageElement.textContent = message;
+            chatBox.appendChild(messageElement);
+        });
+
+        // Function to send a chat message
+       // Handle sending a message
+        function sendMessage() {
+        const messageInput = document.getElementById("message-input");
+        const message = messageInput.value;
+        if (message) {
+            // Emit the message to the server
+            socket.emit("chatMessage", message);
+            messageInput.value = ""; // Clear the input field
+        }
+}
+
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
